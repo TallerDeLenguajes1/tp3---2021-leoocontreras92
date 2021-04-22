@@ -124,7 +124,7 @@ float calcularPrecioProd(producto **pProd, int cant){
     printf("Ingrese el tipo de producto al que desea calcularle el costo total: ");
     gets(producto1);
     fflush(stdin);
-    producto1[0] = toupper(producto1[0]);
+    producto1[0] = toupper(producto1[0]); //corrige error de mayusculas
     for (int i = 0; i < cant; i++)
     {
         if(strcmp(producto1,aux[i].tipoProducto)==0)
