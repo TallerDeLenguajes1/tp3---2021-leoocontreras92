@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<time.h>
 #include<string.h>
+#include<ctype.h>
 
 
 struct producto
@@ -24,12 +25,14 @@ struct cliente
 
 typedef struct cliente cliente;
 
+float calcularPrecioProd(producto **pProd, int cant);
+
 int main()
 {
 
     srand(time(NULL));
     char tiposProductos[5][20]={"Galletas","Snack","Cigarrillos","Caramelos","Bebidas"};
-    int cantClientes,control1;
+    int cantClientes,control1, cantProd;
     char nombre[100];
     
 
@@ -72,7 +75,7 @@ int main()
         printf("\nProductos solicitados: \n");
         
         producto *pProd = (producto*)malloc(sizeof(producto) * pCliente[i].cantidadProductosAPedir);
-        int cantProd = pCliente[i].cantidadProductosAPedir;
+        cantProd = pCliente[i].cantidadProductosAPedir;
 
         for (int j = 0; j < cantProd; j++)
         {
@@ -90,7 +93,12 @@ int main()
             printf("Cantidad de unidades: %d\n",pProd[j].cantidad);
             printf("Precio por unidad: %.2f\n",pProd[j].precioUnitario);
         }
+
         printf("\n---------------------------------------------\n");
+        printf("\n---------------------------------------------\n");
+
+        float precioProd = calcularPrecioProd(&pProd, cantProd);
+       if(precioProd!=0){printf("%.2f\n",precioProd);} 
         printf("\n---------------------------------------------\n");
 
         free(pProd);
@@ -106,5 +114,37 @@ int main()
 
     getchar();
     return 0;
+}
+
+float calcularPrecioProd(producto **pProd, int cant){
+    producto *aux = *pProd;
+    int i =0,cond = 0;
+    float prec=0,precTotal=0;
+    char producto1[50];
+    printf("Ingrese el tipo de producto al que desea calcularle el costo total: ");
+    gets(producto1);
+    fflush(stdin);
+    producto1[0] = toupper(producto1[0]);
+    for (int i = 0; i < cant; i++)
+    {
+        if(strcmp(producto1,aux[i].tipoProducto)==0)
+        {
+            prec = aux[i].cantidad * aux[i].precioUnitario;
+            precTotal = precTotal + prec;
+            cond = 1;
+        }
+
+    }
+    if(cond ==1)
+    {
+        printf("\nEl precio total del producto %s es : ",producto1);
+    }
+    else
+    {
+        printf("\nEl producto seleccionado no existe\n");
+    }
+
+
+    return(precTotal);
 }
 
